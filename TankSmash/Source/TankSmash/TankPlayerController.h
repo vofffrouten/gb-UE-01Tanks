@@ -19,10 +19,18 @@ class TANKSMASH_API ATankPlayerController : public APlayerController
 protected:
 	UPROPERTY()
 		ATankPawn* TankPawn;
+	UPROPERTY()
+		FVector MousePos;
+
 public:
+	ATankPlayerController();
 	virtual void SetPawn(APawn* InPawn) override;
 	virtual void SetupInputComponent() override;
+	virtual void Tick(float DeltaTime) override;
+
 	void MoveForward(float Value);
 	void MoveRight(float Value);
-	
+	void RotateRight(float Value);
+	FVector GetMousePos() { return MousePos; }
+
 };

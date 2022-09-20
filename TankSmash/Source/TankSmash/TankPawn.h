@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TankPlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
 
@@ -46,8 +47,20 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components|Camera")
 		USpringArmComponent* SpringArm;
 
-	float ForwardMoveAxisValue;
-	float RightMoveAxisValue;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+		float InterpolationKey{ 0.1f };
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+		float turretInterpolationKey;
+
+	float ForwardMoveAxisValue { 0.0f };
+	float RightMoveAxisValue { 0.0f };
+	
+	float RightRotateAxisValue { 0.0f };
+	float CurrentRotateAxisValue{ 0.0f };
+
+	UPROPERTY()
+		ATankPlayerController* TankController;
 
 public:	
 	
@@ -58,6 +71,9 @@ public:
 
 	UFUNCTION()
 	void MoveRight(float Value);
+
+	UFUNCTION()
+	void RotateRight(float Value);
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

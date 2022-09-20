@@ -1,11 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "TankPawn.h"
+#include "TankPlayerController.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "TankPawn.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ATankPawn::ATankPawn()
 {
@@ -22,6 +24,7 @@ ATankPawn::ATankPawn()
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Turret"));
 	TurretMesh->SetupAttachment(BodyMesh);
 
+	// create camera Spring
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring arm"));
 	SpringArm->SetupAttachment(BoxCollision);
 	SpringArm->bDoCollisionTest = false;
@@ -38,7 +41,8 @@ ATankPawn::ATankPawn()
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
-		
+	//take controller
+	TankController = Cast<ATankPlayerController>(GetController());
 }
 
 void ATankPawn::MoveRight(float Value)
@@ -51,6 +55,11 @@ void ATankPawn::MoveForward(float Value)
 	ForwardMoveAxisValue = Value;
 }
 
+void ATankPawn::RotateRight(float Value)
+{
+	RightRotateAxisValue = Value;
+}
+
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -60,11 +69,34 @@ void ATankPawn::Tick(float DeltaTime)
 	FVector forwardVector = GetActorForwardVector();
 	FVector rightVector = GetActorRightVector();
 	FVector movePosition = currentLocation + forwardVector * MoveSpeed * ForwardMoveAxisValue * DeltaTime +
-								rightVector * RotateSpeed * RightMoveAxisValue * DeltaTime;
+								rightVector * MoveSpeed * RightMoveAxisValue * DeltaTime;
 	SetActorLocation(movePosition, true);
-	
-}
 
+	//rotate tank
+	CurrentRotateAxisValue = FMath::Lerp(CurrentRotateAxisValue, RightRotateAxisValue, InterpolationKey);
+	
+	FRotator currentRotation = GetActorRotation();
+	float yawRotation = RotateSpeed * CurrentRotateAxisValue * DeltaTime;
+	//only Z rotation
+	yawRotation += currentRotation.Yaw;
+	//build full Frotator with all coorPlanes
+	FRotator newRotation (0, yawRotation, 0);
+	SetActorRotation(newRotation);
+
+	//rotate turret
+	if (TankController) {
+		FVector mousePos = TankController->GetMousePos();
+		FRotator currentTurRotation = TurretMesh->GetComponentRotation();
+		FRotator targetTurRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), mousePos);
+		
+		//exclude X Y
+		targetTurRotation.Pitch = currentTurRotation.Pitch;
+		targetTurRotation.Roll = currentTurRotation.Roll;
+		UE_LOG(LogTemp, Warning, TEXT("TurTarget Rotation = %s"), *targetTurRotation.ToString());
+
+		TurretMesh->SetWorldRotation(FMath::Lerp(targetTurRotation, currentTurRotation, turretInterpolationKey));
+	}
+}
 
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
