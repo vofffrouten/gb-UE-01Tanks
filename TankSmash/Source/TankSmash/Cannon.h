@@ -6,6 +6,7 @@
 #include "GameStructs.h"
 #include "Components/SplineMeshComponent.h"
 #include "GameFramework/Actor.h"
+#include "Projectile.h"
 #include "Cannon.generated.h"
 
 class UArrowComponent;
@@ -55,11 +56,17 @@ protected:
 	FTimerHandle SpecialFireTimerHandle;
 	bool SplReadyToFire = false;
 
+	//Projectile
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+		TSubclassOf<AProjectile> ProjectileClass;
+
 public:	
 	ACannon();
 	
 	void Fire();
 	bool IsReadyToFire();
+	void ProjectileFire();
+	void TraceFire();
 	
 	void SpecialFire();
 	bool SplIsReadyToFire();
