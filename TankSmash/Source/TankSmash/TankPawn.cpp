@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Components/ArrowComponent.h"
 
 ATankPawn::ATankPawn()
 {
@@ -24,6 +25,10 @@ ATankPawn::ATankPawn()
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Turret"));
 	TurretMesh->SetupAttachment(BodyMesh);
 
+	//create Cannon
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
+	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
 	// create camera Spring
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring arm"));
 	SpringArm->SetupAttachment(BoxCollision);
@@ -34,7 +39,7 @@ ATankPawn::ATankPawn()
 
 	// create camera
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(SpringArm);
+	Camera->SetupAttachment(SpringArm);	
 }
 
 
@@ -43,6 +48,8 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 	//take controller
 	TankController = Cast<ATankPlayerController>(GetController());
+
+	SetupCannon();
 }
 
 void ATankPawn::MoveRight(float Value)
@@ -92,9 +99,36 @@ void ATankPawn::Tick(float DeltaTime)
 		//exclude X Y
 		targetTurRotation.Pitch = currentTurRotation.Pitch;
 		targetTurRotation.Roll = currentTurRotation.Roll;
-		UE_LOG(LogTemp, Warning, TEXT("TurTarget Rotation = %s"), *targetTurRotation.ToString());
 
 		TurretMesh->SetWorldRotation(FMath::Lerp(targetTurRotation, currentTurRotation, turretInterpolationKey));
+	}
+}
+
+//cannonsetups
+void ATankPawn::SetupCannon()
+{
+	if (Cannon) {
+		Cannon->Destroy();
+	}
+
+	FActorSpawnParameters params;
+	params.Instigator = this;
+	params.Owner = this;
+	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
+	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+void ATankPawn::Fire()
+{
+	if (Cannon) {
+		Cannon->Fire();
+	}
+}
+
+void ATankPawn::SpecialFire()
+{
+	if (Cannon) {
+		Cannon->SpecialFire();
 	}
 }
 

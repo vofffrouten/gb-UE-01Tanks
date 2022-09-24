@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Cannon.h"
 #include "CoreMinimal.h"
 #include "TankPlayerController.h"
 #include "GameFramework/Pawn.h"
@@ -62,6 +63,15 @@ protected:
 	UPROPERTY()
 		ATankPlayerController* TankController;
 
+	//cannon
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UArrowComponent* CannonSetupPoint;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+		TSubclassOf<ACannon> CannonClass;
+	
+	UPROPERTY()
+		ACannon* Cannon;
+
 public:	
 	
 	virtual void Tick(float DeltaTime) override;
@@ -74,6 +84,15 @@ public:
 
 	UFUNCTION()
 	void RotateRight(float Value);
+
+	UFUNCTION()
+	void Fire();
+
+	UFUNCTION()
+	void SpecialFire();
+
+	UFUNCTION()
+	void SetupCannon();
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
