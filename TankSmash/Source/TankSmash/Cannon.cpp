@@ -58,6 +58,11 @@ void ACannon::TraceFire()
 	}
 }
 
+void ACannon::AddAmmo(int ammo)
+{
+	AmmoCount += ammo;
+}
+
 //made independent funcs for fire type (it was too hard to read)
 void ACannon::Fire()
 {

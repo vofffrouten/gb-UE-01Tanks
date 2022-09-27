@@ -67,6 +67,7 @@ public:
 	bool IsReadyToFire();
 	void ProjectileFire();
 	void TraceFire();
+	void AddAmmo(int ammo);
 	
 	void SpecialFire();
 	bool SplIsReadyToFire();

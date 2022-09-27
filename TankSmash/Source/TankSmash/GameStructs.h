@@ -11,3 +11,10 @@ enum class ECannonType :uint8 {
 	FireProjectile = 0 UMETA(Display = "Use Projectile"),
 	FireTrace = 1 UMETA(Display = "Use Trace")	
 };
+
+//boxtypes
+UENUM(BlueprintType)
+enum class EBoxType :uint8 {
+	Ammo = 0 UMETA(Display = "Ammo"),
+	Cannon = 1 UMETA(Display = "Cannon")
+};

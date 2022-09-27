@@ -92,7 +92,10 @@ public:
 	void SpecialFire();
 
 	UFUNCTION()
-	void SetupCannon();
+	void SetupCannon(TSubclassOf<ACannon> newCannon);
+
+	UFUNCTION()
+	void AddCannonAmmo(int ammo);
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

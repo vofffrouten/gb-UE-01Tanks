@@ -16,7 +16,7 @@ ATankPawn::ATankPawn()
 	
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Tank collision box"));
 	// create hierarchy of objects
-	RootComponent = BodyMesh;
+	RootComponent = BoxCollision;
 
 	// create gizmo for Body Mesh and Turret Mesh
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Body"));
@@ -49,7 +49,7 @@ void ATankPawn::BeginPlay()
 	//take controller
 	TankController = Cast<ATankPlayerController>(GetController());
 
-	SetupCannon();
+	SetupCannon(CannonClass);
 }
 
 void ATankPawn::MoveRight(float Value)
@@ -105,8 +105,12 @@ void ATankPawn::Tick(float DeltaTime)
 }
 
 //cannonsetups
-void ATankPawn::SetupCannon()
+void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 {
+	if (!newCannon) {
+		return;
+	}
+		
 	if (Cannon) {
 		Cannon->Destroy();
 	}
@@ -114,7 +118,7 @@ void ATankPawn::SetupCannon()
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
+	Cannon = GetWorld()->SpawnActor<ACannon>(newCannon, params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
@@ -130,6 +134,11 @@ void ATankPawn::SpecialFire()
 	if (Cannon) {
 		Cannon->SpecialFire();
 	}
+}
+
+void ATankPawn::AddCannonAmmo(int ammo)
+{
+	Cannon->AddAmmo(ammo);
 }
 
 // Called to bind functionality to input
