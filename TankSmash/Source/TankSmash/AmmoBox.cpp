@@ -15,7 +15,7 @@ AAmmoBox::AAmmoBox()
 	
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
 	BoxCollision->SetupAttachment(sceneComp);
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AAmmoBox::OnMeshOverlapBegin);
+	//BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &AAmmoBox::OnMeshOverlapBegin);
 	BoxCollision->SetCollisionProfileName(FName("OverlapAll"));
 	BoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	BoxCollision->SetGenerateOverlapEvents(true);
@@ -31,7 +31,7 @@ void AAmmoBox::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp,
 	ATankPawn* TankPawn = Cast<ATankPawn>(OtherActor);
 	if (TankPawn) {	
 		if (Type == EBoxType::Cannon) {
-			TankPawn->SetupCannon(CannonClass);
+			TankPawn->NewCannon(CannonClass);
 		} else {
 			TankPawn->AddCannonAmmo(AAmmoCount);
 		}

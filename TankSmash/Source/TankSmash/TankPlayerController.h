@@ -33,6 +33,7 @@ public:
 	void RotateRight(float Value);
 	void Fire();
 	void SpecialFire();
+	void ChangeCannon();
 	FVector GetMousePos() { return MousePos; }
 
 };

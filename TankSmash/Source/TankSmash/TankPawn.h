@@ -68,6 +68,9 @@ protected:
 		UArrowComponent* CannonSetupPoint;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon> CannonClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+		TSubclassOf<ACannon> SecondCannonClass;
 	
 	UPROPERTY()
 		ACannon* Cannon;
@@ -84,6 +87,9 @@ public:
 
 	UFUNCTION()
 	void RotateRight(float Value);
+	
+	UFUNCTION()
+	void ChangeCannon();
 
 	UFUNCTION()
 	void Fire();
@@ -92,10 +98,13 @@ public:
 	void SpecialFire();
 
 	UFUNCTION()
-	void SetupCannon(TSubclassOf<ACannon> newCannon);
+	void SetupCannon();
 
 	UFUNCTION()
 	void AddCannonAmmo(int ammo);
+
+	UFUNCTION()
+	void NewCannon(TSubclassOf<ACannon> newCannon);
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

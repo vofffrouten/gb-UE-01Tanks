@@ -49,7 +49,7 @@ void ATankPawn::BeginPlay()
 	//take controller
 	TankController = Cast<ATankPlayerController>(GetController());
 
-	SetupCannon(CannonClass);
+	SetupCannon();
 }
 
 void ATankPawn::MoveRight(float Value)
@@ -105,12 +105,8 @@ void ATankPawn::Tick(float DeltaTime)
 }
 
 //cannonsetups
-void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
+void ATankPawn::SetupCannon()
 {
-	if (!newCannon) {
-		return;
-	}
-		
 	if (Cannon) {
 		Cannon->Destroy();
 	}
@@ -118,9 +114,27 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(newCannon, params);
+	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
 	Cannon->AttachToComponent(CannonSetupPoint, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
+
+//Chenge Cannon on Click
+void ATankPawn::ChangeCannon()
+{
+	Swap(CannonClass, SecondCannonClass);
+	SetupCannon();
+}
+
+//Get Cannon from Crate
+void ATankPawn::NewCannon(TSubclassOf<ACannon> newCannon)
+{
+	if (!newCannon) {
+		return;
+	}
+	CannonClass = newCannon;
+	SetupCannon();
+}
+
 
 void ATankPawn::Fire()
 {

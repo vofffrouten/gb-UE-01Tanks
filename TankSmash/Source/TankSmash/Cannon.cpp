@@ -27,7 +27,7 @@ ACannon::ACannon()
 void ACannon::ProjectileFire()
 {
 	--AmmoCount;
-	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, "!!!PROJECTILE!!!");
+	//GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, "!!!PROJECTILE!!!");
 	AProjectile* projectile = GetWorld()->
 		SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(),
 			ProjectileSpawnPoint->GetComponentRotation());
@@ -38,7 +38,7 @@ void ACannon::ProjectileFire()
 
 void ACannon::TraceFire()
 {
-	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Red, "!!!TRACE!!!");
+	//GEngine->AddOnScreenDebugMessage(10, 1, FColor::Red, "!!!TRACE!!!");
 	FHitResult hitResult;
 	FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
 	traceParams.bTraceComplex = true;
@@ -76,6 +76,7 @@ void ACannon::Fire()
 	} else {
 		TraceFire();
 	}
+	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, FString::Printf(TEXT("Ammo left: %d"), AmmoCount));
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);
 }
 
@@ -83,7 +84,7 @@ void ACannon::Fire()
 
 void ACannon::SpecialActualFire()
 {
-	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, "!!!SPECIAL~~~BADA~~~~BOOOM!!!!");
+//	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, "!!!SPECIAL~~~BADA~~~~BOOOM!!!!");
 }
 
 void ACannon::SpecialFire()
