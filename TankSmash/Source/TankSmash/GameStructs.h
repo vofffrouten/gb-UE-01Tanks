@@ -9,7 +9,8 @@
 UENUM(BlueprintType)
 enum class ECannonType :uint8 {
 	FireProjectile = 0 UMETA(Display = "Use Projectile"),
-	FireTrace = 1 UMETA(Display = "Use Trace")	
+	FireTrace = 1 UMETA(Display = "Use Trace"),
+	FireSpeed = 2 UMETA(DIsplay = "Use Speed Bullet")
 };
 
 //boxtypes

@@ -58,6 +58,19 @@ void ACannon::TraceFire()
 	}
 }
 
+void ACannon::SpeedFire()
+{
+	--AmmoCount;
+	//GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, "!!!PROJECTILE!!!");
+	AProjectile* projectile = GetWorld()->
+		SpawnActor<AProjectile>(ProjectileClass, ProjectileSpawnPoint->GetComponentLocation(),
+			ProjectileSpawnPoint->GetComponentRotation());
+	if (projectile) {
+		projectile->SetMoveSpeed(2);
+		projectile->Start();
+	}
+}
+
 void ACannon::AddAmmo(int ammo)
 {
 	AmmoCount += ammo;
@@ -73,8 +86,10 @@ void ACannon::Fire()
 
 	if (Type == ECannonType::FireProjectile) {
 		ProjectileFire();
-	} else {
+	} else if (Type == ECannonType::FireTrace) {
 		TraceFire();
+	} else {
+		SpeedFire();
 	}
 	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, FString::Printf(TEXT("Ammo left: %d"), AmmoCount));
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);

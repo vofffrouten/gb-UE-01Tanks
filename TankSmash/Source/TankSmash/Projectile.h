@@ -36,6 +36,9 @@ public:
 
 	void Start();
 
+	UFUNCTION()
+		void SetMoveSpeed(float speedMult);
+
 protected:
 	UFUNCTION()
 	void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, 
@@ -43,5 +46,6 @@ protected:
 			const FHitResult& SweepResult);
 	UFUNCTION()
 		void Move();
+	//for speed bullet
 
 };

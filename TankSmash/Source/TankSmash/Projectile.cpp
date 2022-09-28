@@ -40,4 +40,9 @@ void AProjectile::Move()
 	SetActorLocation(movePosition);
 }
 
+void AProjectile::SetMoveSpeed(float speedMult)
+{
+	MoveSpeed = speedMult;
+}
+
 
