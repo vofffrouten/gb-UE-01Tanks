@@ -33,3 +33,14 @@ struct FDamageData {
 	UPROPERTY()
 	AActor* DamageMaker;
 };
+
+USTRUCT()
+struct FScores {
+	GENERATED_BODY()
+
+	UPROPERTY()
+		int ScoresValue;
+
+	UPROPERTY()
+		AActor* DamageMaker;
+};

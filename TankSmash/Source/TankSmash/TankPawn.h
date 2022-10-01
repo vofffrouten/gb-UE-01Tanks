@@ -7,6 +7,7 @@
 #include "TankPlayerController.h"
 #include "GameFramework/Pawn.h"
 #include "DamageTaker.h"
+#include "WarMachine.h"
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
@@ -16,26 +17,11 @@ class UCameraComponent;
 class UHealthComponent;
 
 UCLASS()
-class TANKSMASH_API ATankPawn : public APawn, public IDamageTaker
+class TANKSMASH_API ATankPawn : public AWarMachine
 {
 	GENERATED_BODY()
 
-public:
-	
-	ATankPawn();
-
-protected:
-	
-	virtual void BeginPlay() override;
-	// box for tanks Body mesh
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* BodyMesh;
-	// box for tanks Turret mesh
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* TurretMesh;
-	// box of collisions
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UBoxComponent* BoxCollision;
+protected:	
 
 	// speed of moving and rotating
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
@@ -64,25 +50,15 @@ protected:
 
 	UPROPERTY()
 		ATankPlayerController* TankController;
-
-	//cannon
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UArrowComponent* CannonSetupPoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
-		TSubclassOf<ACannon> CannonClass;
+		//cannon
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon> SecondCannonClass;
 	
-	UPROPERTY()
-		ACannon* Cannon;
-
-	//health component
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UHealthComponent* HealthComponent;
-
 public:	
-	
+
+	ATankPawn();
+
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
@@ -98,9 +74,6 @@ public:
 	void ChangeCannon();
 
 	UFUNCTION()
-	void Fire();
-
-	UFUNCTION()
 	void SpecialFire();
 
 	UFUNCTION()
@@ -114,12 +87,8 @@ public:
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION()
-		void TakeDamage(FDamageData DamageData);
 
 protected:
-	UFUNCTION()
-		void Die();
-	UFUNCTION()
-		void DamageTaked(float DamageValue);
+	virtual void BeginPlay() override;
+
 };

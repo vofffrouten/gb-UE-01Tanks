@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
+#include "WarMachine.h"
 #include "Components/ArrowComponent.h"
 
 ATankPawn::ATankPawn()
@@ -20,9 +21,9 @@ ATankPawn::ATankPawn()
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Body"));
 	RootComponent = BodyMesh;
 
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Tank collision box"));
+	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Tank collision box"));
 	// create hierarchy of objects
-	BoxCollision->SetupAttachment(BodyMesh);
+	HitCollider->SetupAttachment(BodyMesh);
 
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Turret"));
 	TurretMesh->SetupAttachment(BodyMesh);
@@ -33,7 +34,7 @@ ATankPawn::ATankPawn()
 
 	// create camera Spring
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring arm"));
-	SpringArm->SetupAttachment(BoxCollision);
+	SpringArm->SetupAttachment(HitCollider);
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->bInheritPitch = false;
 	SpringArm->bInheritYaw = false;
@@ -143,13 +144,6 @@ void ATankPawn::NewCannon(TSubclassOf<ACannon> newCannon)
 }
 
 
-void ATankPawn::Fire()
-{
-	if (Cannon) {
-		Cannon->Fire();
-	}
-}
-
 void ATankPawn::SpecialFire()
 {
 	if (Cannon) {
@@ -167,19 +161,4 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}
-
-void ATankPawn::TakeDamage(FDamageData DamageData)
-{
-	HealthComponent->TakeDamage(DamageData);
-}
-
-void ATankPawn::DamageTaked(float DamageValue)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), DamageValue, HealthComponent->GetHealth());
-}
-
-void ATankPawn::Die()
-{
-	Destroy();
 }

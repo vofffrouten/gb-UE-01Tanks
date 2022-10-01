@@ -9,6 +9,7 @@
 #include "Cannon.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
+#include "WarMachine.h"
 #include "TimerManager.h"
 
 
@@ -100,26 +101,6 @@ bool ATurret::CanFire()
 	return aimAngle <= Accurency;
 }
 
-void ATurret::Fire()
-{
-	if (Cannon) {
-		Cannon->Fire();
-	}
-}
 
-void ATurret::TakeDamage(FDamageData DamageData)
-{
-	HealthComponent->TakeDamage(DamageData);
-}
-
-void ATurret::DamageTaked(float DamageValue) 
-{
-	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), DamageValue, HealthComponent->GetHealth());
-}
-
-void ATurret::Die()
-{
-	Destroy();
-}
 
 

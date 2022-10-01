@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
+#include "WarMachine.h"
 #include "Turret.generated.h"
 
 class UStaticMeshComponent;
@@ -14,29 +15,13 @@ class ACannon;
 class UArrowComponent;
 class APawn;
 
+
 UCLASS()
-class TANKSMASH_API ATurret : public AActor, public IDamageTaker
+class TANKSMASH_API ATurret : public AWarMachine
 {
 	GENERATED_BODY()
 	
 protected:
-	//body
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* BodyMesh;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UStaticMeshComponent* TurretMesh;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UBoxComponent* HitCollider;
-
-	//cannon
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UArrowComponent* CannonSetupPoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
-		TSubclassOf<ACannon> CannonClass;
-	UPROPERTY()
-		ACannon* Cannon;
 
 	UPROPERTY()
 		APawn* PlayerPawn;
@@ -55,13 +40,8 @@ protected:
 	const FString BodyMeshPath { "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'" };
 	const FString TurretMeshPath {"StaticMesh'/Game/CSC/Meshes/SM_CSC_Gun1.SM_CSC_Gun1'"};
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-		UHealthComponent* HealthComponent;
-
 public:	
 	ATurret();
-	UFUNCTION()
-		void TakeDamage(FDamageData DamageData);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -70,10 +50,4 @@ protected:
 	void RotateToPlayer();
 	bool IsPlayerInRange();
 	bool CanFire();
-	void Fire();
-	
-	UFUNCTION()
-		void Die();
-	UFUNCTION()
-		void DamageTaked(float DamageValue);
 };
