@@ -13,6 +13,7 @@ class UStaticMeshComponent;
 class UBoxComponent;
 class USpringArmComponent;
 class UCameraComponent;
+class UHealthComponent;
 
 UCLASS()
 class TANKSMASH_API ATankPawn : public APawn, public IDamageTaker
@@ -76,6 +77,10 @@ protected:
 	UPROPERTY()
 		ACannon* Cannon;
 
+	//health component
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UHealthComponent* HealthComponent;
+
 public:	
 	
 	virtual void Tick(float DeltaTime) override;
@@ -111,4 +116,10 @@ public:
 
 	UFUNCTION()
 		void TakeDamage(FDamageData DamageData);
+
+protected:
+	UFUNCTION()
+		void Die();
+	UFUNCTION()
+		void DamageTaked(float DamageValue);
 };

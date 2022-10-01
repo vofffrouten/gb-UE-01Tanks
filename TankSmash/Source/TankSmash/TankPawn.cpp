@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "DamageTaker.h"
+#include "HealthComponent.h"
 #include "Components/ArrowComponent.h"
 
 ATankPawn::ATankPawn()
@@ -41,6 +42,11 @@ ATankPawn::ATankPawn()
 	// create camera
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);	
+
+	//health
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+	HealthComponent->OnDie.AddUObject(this, &ATankPawn::Die);
+	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::DamageTaked);
 }
 
 
@@ -165,5 +171,15 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATankPawn::TakeDamage(FDamageData DamageData)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tank taked damage:%f "), DamageData.DamageValue);
+	HealthComponent->TakeDamage(DamageData);
+}
+
+void ATankPawn::DamageTaked(float DamageValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), DamageValue, HealthComponent->GetHealth());
+}
+
+void ATankPawn::Die()
+{
+	Destroy();
 }

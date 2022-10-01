@@ -8,6 +8,7 @@
 #include "Turret.h"
 #include "Cannon.h"
 #include "DamageTaker.h"
+#include "HealthComponent.h"
 #include "TimerManager.h"
 
 
@@ -33,6 +34,11 @@ ATurret::ATurret()
 	if (bodyMeshMap) {
 		BodyMesh->SetStaticMesh(bodyMeshMap);
 	}
+
+	//health
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
+	HealthComponent->OnDie.AddUObject(this, &ATurret::Die);
+	HealthComponent->OnDamaged.AddUObject(this, &ATurret::DamageTaked);
 }
 
 void ATurret::BeginPlay()
@@ -103,5 +109,17 @@ void ATurret::Fire()
 
 void ATurret::TakeDamage(FDamageData DamageData)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Turret taked damage:%f "), DamageData.DamageValue);
+	HealthComponent->TakeDamage(DamageData);
 }
+
+void ATurret::DamageTaked(float DamageValue) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(), DamageValue, HealthComponent->GetHealth());
+}
+
+void ATurret::Die()
+{
+	Destroy();
+}
+
+

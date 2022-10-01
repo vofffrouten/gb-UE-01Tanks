@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DamageTaker.h"
+#include "HealthComponent.h"
 #include "Turret.generated.h"
 
 class UStaticMeshComponent;
@@ -54,6 +55,9 @@ protected:
 	const FString BodyMeshPath { "StaticMesh'/Game/CSC/Meshes/SM_CSC_Tower1.SM_CSC_Tower1'" };
 	const FString TurretMeshPath {"StaticMesh'/Game/CSC/Meshes/SM_CSC_Gun1.SM_CSC_Gun1'"};
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UHealthComponent* HealthComponent;
+
 public:	
 	ATurret();
 	UFUNCTION()
@@ -67,4 +71,9 @@ protected:
 	bool IsPlayerInRange();
 	bool CanFire();
 	void Fire();
+	
+	UFUNCTION()
+		void Die();
+	UFUNCTION()
+		void DamageTaked(float DamageValue);
 };
