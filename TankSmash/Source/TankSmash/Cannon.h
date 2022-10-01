@@ -67,13 +67,14 @@ public:
 	bool IsReadyToFire();
 	void ProjectileFire();
 	void TraceFire();
+	void TraceFireDamage(AActor* OtherActor);
 	void SpeedFire();
 	void AddAmmo(int ammo);
 	
 	void SpecialFire();
 	bool SplIsReadyToFire();
 	void SpecialActualFire();
-
+	
 protected:
 	virtual void BeginPlay() override;
 	void Reload();

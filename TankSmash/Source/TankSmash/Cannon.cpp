@@ -4,6 +4,7 @@
 #include "GameStructs.h"
 #include "Engine/Engine.h"
 #include "TimerManager.h"
+#include "DamageTaker.h"
 #include "Components/ArrowComponent.h"
 #include "Components/StaticMeshComponent.h"
 
@@ -36,6 +37,28 @@ void ACannon::ProjectileFire()
 	}
 }
 
+void ACannon::TraceFireDamage(AActor* OtherActor) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Laser %s collided with %s. "), *GetName(), *OtherActor->GetName());
+	AActor* owner = GetOwner();
+	AActor* ownerByOwner = (owner != nullptr) ? owner->GetOwner() : nullptr;
+
+	if (OtherActor != owner && OtherActor != ownerByOwner) {
+		IDamageTaker* damageTakerActor = Cast<IDamageTaker>(OtherActor);
+		if (damageTakerActor) {
+			FDamageData damageData;
+			damageData.DamageValue = 1;
+			damageData.Instigator = owner;
+			damageData.DamageMaker = this;
+
+			damageTakerActor->TakeDamage(damageData);
+		}
+		else {
+			OtherActor->Destroy();
+		}
+	}
+}
+
 void ACannon::TraceFire()
 {
 	//GEngine->AddOnScreenDebugMessage(10, 1, FColor::Red, "!!!TRACE!!!");
@@ -52,7 +75,7 @@ void ACannon::TraceFire()
 		DrawDebugLine(GetWorld(), start, hitResult.Location, FColor::Red, false, 0.4f, 0, 4);
 		if (hitResult.GetActor())
 		{
-			hitResult.GetActor()->Destroy();
+			TraceFireDamage(hitResult.GetActor());
 		}
 	} else {
 		DrawDebugLine(GetWorld(), start, end, FColor::Green, false, 0.4f, 0, 2);
