@@ -43,6 +43,7 @@ void ACannon::TraceFire()
 	FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
 	traceParams.bTraceComplex = true;
 	traceParams.bReturnPhysicalMaterial = false;
+	--SplAmmoCount;
 
 	FVector start = ProjectileSpawnPoint->GetComponentLocation();
 	FVector end = ProjectileSpawnPoint->GetForwardVector() * FireRange + start;

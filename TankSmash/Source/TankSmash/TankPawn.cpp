@@ -8,19 +8,20 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "DamageTaker.h"
 #include "Components/ArrowComponent.h"
 
 ATankPawn::ATankPawn()
 {
  	PrimaryActorTick.bCanEverTick = true;
 	
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Tank collision box"));
-	// create hierarchy of objects
-	RootComponent = BoxCollision;
-
 	// create gizmo for Body Mesh and Turret Mesh
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Body"));
-	BodyMesh->SetupAttachment(BoxCollision);
+	RootComponent = BodyMesh;
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Tank collision box"));
+	// create hierarchy of objects
+	BoxCollision->SetupAttachment(BodyMesh);
 
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Tank Turret"));
 	TurretMesh->SetupAttachment(BodyMesh);
@@ -162,3 +163,7 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATankPawn::TakeDamage(FDamageData DamageData)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Tank taked damage:%f "), DamageData.DamageValue);
+}

@@ -19,3 +19,17 @@ enum class EBoxType :uint8 {
 	Ammo = 0 UMETA(Display = "Ammo"),
 	Cannon = 1 UMETA(Display = "Cannon")
 };
+
+USTRUCT()
+struct FDamageData {
+	GENERATED_BODY()
+
+	UPROPERTY()
+	float DamageValue;
+
+	UPROPERTY()
+	AActor* Instigator;
+
+	UPROPERTY()
+	AActor* DamageMaker;
+};

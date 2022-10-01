@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "TankPlayerController.h"
 #include "GameFramework/Pawn.h"
+#include "DamageTaker.h"
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
@@ -14,7 +15,7 @@ class USpringArmComponent;
 class UCameraComponent;
 
 UCLASS()
-class TANKSMASH_API ATankPawn : public APawn
+class TANKSMASH_API ATankPawn : public APawn, public IDamageTaker
 {
 	GENERATED_BODY()
 
@@ -108,4 +109,6 @@ public:
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+		void TakeDamage(FDamageData DamageData);
 };
