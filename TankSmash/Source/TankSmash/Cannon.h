@@ -7,6 +7,8 @@
 #include "Components/SplineMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
 #include "Cannon.generated.h"
 
 class UArrowComponent;
@@ -59,6 +61,12 @@ protected:
 	//Projectile
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
 		TSubclassOf<AProjectile> ProjectileClass;
+
+	//effects
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UParticleSystemComponent* ShootEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		UAudioComponent* AudioEffect;
 
 public:	
 	ACannon();

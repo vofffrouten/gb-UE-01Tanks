@@ -6,6 +6,8 @@
 #include "TimerManager.h"
 #include "DamageTaker.h"
 #include "Components/ArrowComponent.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -23,6 +25,10 @@ ACannon::ACannon()
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn point"));
 	ProjectileSpawnPoint->SetupAttachment(CannonMesh);
 
+	ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ShootViz"));
+	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
+
+	AudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio shoot"));
 }
 
 void ACannon::ProjectileFire()
@@ -117,6 +123,9 @@ void ACannon::Fire()
 	}
 	GEngine->AddOnScreenDebugMessage(10, 1, FColor::Blue, FString::Printf(TEXT("Ammo left: %d"), AmmoCount));
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);
+
+	ShootEffect->ActivateSystem();
+	AudioEffect->Play();
 }
 
 #pragma region specialFire

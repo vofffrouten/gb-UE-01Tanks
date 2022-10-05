@@ -60,9 +60,8 @@ protected:
 		TArray <FVector> PatrollingPoints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurancy")
 		float MovementAccurency = 5.0f;
-	//effects
 
-	
+
 public:	
 
 	ATankPawn();
