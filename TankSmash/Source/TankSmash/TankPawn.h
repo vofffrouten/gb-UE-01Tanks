@@ -54,6 +54,14 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 		TSubclassOf<ACannon> SecondCannonClass;
+
+	//for AI
+	UPROPERTY(EditAnywhere, BluePrintReadWrite, Category = "AI|Move params|Patrol Points", Meta = (MakeEditWidget = true))
+		TArray <FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurancy")
+		float MovementAccurency = 5.0f;
+	//effects
+
 	
 public:	
 
@@ -86,6 +94,22 @@ public:
 	void NewCannon(TSubclassOf<ACannon> newCannon);
 		
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//for AI
+	UFUNCTION()
+		TArray<FVector> GetPatrollingPoints() { return PatrollingPoints; };
+	UFUNCTION()
+		float GetMovementAccurancy() { return MovementAccurency; };
+
+	UFUNCTION()
+		FVector GetForwardTurretVector();
+	
+	UFUNCTION()
+		void RotateTurretTo(FVector TargetPos);
+
+	UFUNCTION()
+		FVector GetEyesPosition();
+
 
 
 protected:
