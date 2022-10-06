@@ -50,4 +50,5 @@ protected:
 	void RotateToPlayer();
 	bool IsPlayerInRange();
 	bool CanFire();
+	bool IsPlayerSeen();
 };

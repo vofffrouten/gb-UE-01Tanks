@@ -48,6 +48,15 @@ ATankPawn::ATankPawn()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	HealthComponent->OnDie.AddUObject(this, &ATankPawn::Die);
 	HealthComponent->OnDamaged.AddUObject(this, &ATankPawn::DamageTaked);
+
+	//audio
+//	AudioEffectDie = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die"));
+//	AudioEffectDie->SetupAttachment(BodyMesh);
+//	AudioEffectDie->SetAutoActivate(false);
+
+	AudioEffectIncome = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Income"));
+	AudioEffectIncome->SetupAttachment(BodyMesh);
+	AudioEffectIncome->SetAutoActivate(false);
 }
 
 
@@ -175,5 +184,6 @@ void ATankPawn::AddCannonAmmo(int ammo)
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
+
+

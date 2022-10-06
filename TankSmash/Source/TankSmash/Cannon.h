@@ -67,6 +67,8 @@ protected:
 		UParticleSystemComponent* ShootEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UAudioComponent* AudioEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components|Effects")
+		class UAudioComponent* AudioEffectDie;
 
 public:	
 	ACannon();

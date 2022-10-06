@@ -61,7 +61,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurancy")
 		float MovementAccurency = 5.0f;
 
-
 public:	
 
 	ATankPawn();
@@ -108,8 +107,6 @@ public:
 
 	UFUNCTION()
 		FVector GetEyesPosition();
-
-
 
 protected:
 	virtual void BeginPlay() override;

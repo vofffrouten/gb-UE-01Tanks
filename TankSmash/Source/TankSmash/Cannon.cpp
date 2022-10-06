@@ -27,8 +27,13 @@ ACannon::ACannon()
 
 	ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ShootViz"));
 	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
+	ShootEffect->SetAutoActivate(false);
 
 	AudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio shoot"));
+	AudioEffect->SetAutoActivate(false);
+
+	AudioEffectDie = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Die"));
+	AudioEffectDie->SetAutoActivate(false);
 }
 
 void ACannon::ProjectileFire()
@@ -60,6 +65,7 @@ void ACannon::TraceFireDamage(AActor* OtherActor)
 			damageTakerActor->TakeDamage(damageData);
 		}
 		else {
+			AudioEffectDie->Play();
 			OtherActor->Destroy();
 		}
 	}

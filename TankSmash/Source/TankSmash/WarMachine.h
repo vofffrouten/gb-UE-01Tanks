@@ -40,6 +40,10 @@ protected:
 		TSubclassOf<ACannon> CannonClass;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 		UHealthComponent* HealthComponent;
+//	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components|Effects")
+//		class UAudioComponent* AudioEffectDie;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+		class UAudioComponent* AudioEffectIncome;
 
 	UFUNCTION()
 		void Die();

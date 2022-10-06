@@ -41,7 +41,7 @@ float ATankAIController::GetRotationValue()
 {
 	FVector currentPoint = PatrollingPoints[PatrollingIndex];
 	FVector pawnLocation = TankPawn->GetActorLocation();
-	UE_LOG(LogTemp, Warning, TEXT("Current point is: %s    Loc: %s"), *currentPoint.ToString(), *pawnLocation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Current point is: %s    Loc: %s"), *currentPoint.ToString(), *pawnLocation.ToString());
 
 	float distance = FVector::Distance(currentPoint, pawnLocation);
 
@@ -119,13 +119,15 @@ bool ATankAIController::IsPlayerSeen()
 	traceParams.AddIgnoredActor(TankPawn);
 	traceParams.bReturnPhysicalMaterial = false;
 
-	if (GetWorld()->LineTraceSingleByChannel(hitResult, eyesPos, playerPos, ECollisionChannel::ECC_Visibility, traceParams)) {
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, eyesPos, playerPos, ECollisionChannel::ECC_GameTraceChannel1, traceParams)) {
 		if (hitResult.GetActor()) {
-			//DrawDebugLine(GetWorld(), eyesPos, hitResult.Location, FColor::Green, false, 0.5f, 0, 10);
-			return true;//hitResult.GetActor() == PlayerPawn;
+			DrawDebugLine(GetWorld(), eyesPos, hitResult.Location, FColor::Red, false, 0.5f, 0, 10);
+			//UE_LOG(LogTemp, Warning, TEXT("Collided with %s. "), *hitResult.GetActor()->GetName());
+			return hitResult.GetActor() == PlayerPawn;
 		}
 	}
-	//DrawDebugLine(GetWorld(), eyesPos, playerPos, FColor::Orange, false, 0.5f, 0, 10);
+
+	DrawDebugLine(GetWorld(), eyesPos, playerPos, FColor::Orange, false, 0.5f, 0, 10);
 	return false;
 }
 

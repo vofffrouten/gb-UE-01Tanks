@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "DamageTaker.h"
 #include "Projectile.h"
+#include "Components/AudioComponent.h"
 
 
 AProjectile::AProjectile()
@@ -22,6 +23,8 @@ AProjectile::AProjectile()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(CollisionSphere);	
+
+
 }
 
 void AProjectile::Start()
@@ -32,6 +35,8 @@ void AProjectile::Start()
 void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
+
+	
 	AActor* owner = GetOwner();
 	AActor* ownerByOwner = (owner != nullptr) ? owner->GetOwner() : nullptr;
 	
@@ -43,7 +48,7 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 			damageData.Instigator = owner;
 			damageData.DamageMaker = this;
 		
-			damageTakerActor->TakeDamage(damageData);
+			damageTakerActor->TakeDamage(damageData);			
 		}
 		else {
 			OtherActor->Destroy();
