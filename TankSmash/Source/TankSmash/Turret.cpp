@@ -40,6 +40,10 @@ ATurret::ATurret()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	HealthComponent->OnDie.AddUObject(this, &ATurret::Die);
 	HealthComponent->OnDamaged.AddUObject(this, &ATurret::DamageTaked);
+
+	AudioEffectIncome = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio Income"));
+	AudioEffectIncome->SetupAttachment(BodyMesh);
+	AudioEffectIncome->SetAutoActivate(false);
 }
 
 void ATurret::BeginPlay()

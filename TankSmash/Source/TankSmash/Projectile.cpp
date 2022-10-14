@@ -49,12 +49,21 @@ void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor
 			damageData.DamageMaker = this;
 		
 			damageTakerActor->TakeDamage(damageData);			
+		} else {
+			UPrimitiveComponent* mesh = Cast<UPrimitiveComponent>(OtherActor->GetRootComponent());
+			//AActor* mesh = Cast<AActor>(OtherActor);
+			if (mesh) {
+				if (mesh->IsSimulatingPhysics()) {
+					UE_LOG(LogTemp, Warning, TEXT("Im Falling!!!"));
+					FVector forceVector = OtherActor->GetActorLocation() - GetActorLocation();
+					forceVector.Normalize();
+					mesh->AddImpulse(forceVector * PushForce, NAME_None, true);
+				}
+			}			
 		}
-		else {
-			OtherActor->Destroy();
-		}
+		Destroy();
 	}
-	Destroy();
+	
 }
 
 void AProjectile::Move()
